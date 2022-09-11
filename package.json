@@ -1,0 +1,52 @@
+{
+  "name": "node-typescript",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc",
+    "build:dev": "tsc --watch",
+    "dev": "npm run build && concurrently 'npm:build:dev' 'npm:start:dev'",
+    "format": "prettier --write .",
+    "lint": "eslint src/ --cache --fix",
+    "start": "node --enable-source-maps dist/server.js",
+    "start:dev": "nodemon --watch dist/ --watch .env",
+    "test": "jest",
+    "task": "echo 'Doing a task'"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arkadeion/node-typescript.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Arkadeion/node-typescript/issues"
+  },
+  "homepage": "https://github.com/Arkadeion/node-typescript#readme",
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^29.0.0",
+    "@types/node": "^18.7.16",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "concurrently": "^7.4.0",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "jest": "^29.0.2",
+    "nodemon": "^2.0.19",
+    "prettier": "2.7.1",
+    "prisma": "^4.3.1",
+    "supertest": "^6.2.4",
+    "ts-jest": "^29.0.0",
+    "typescript": "^4.8.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.3.1",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "express-async-errors": "^3.1.1"
+  }
+}
