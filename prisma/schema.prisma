@@ -11,10 +11,10 @@ datasource db {
 }
 
 model Comment {
+    id              Int       @id @default(autoincrement())
     userId          Int
-    id              Int       @id
-    title           String
-    body            String
+    title           String     @db.VarChar(50)
+    commentBody     String     @db.VarChar(255)
     createdAt       DateTime  @default(now())
     updatedAt       DateTime  @updatedAt
 }
