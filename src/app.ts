@@ -11,6 +11,10 @@ import {
     validationErrorMiddleware,
 } from "./lib/validation";
 
+import { initMulterMiddleware } from "./lib/middleware/multer";
+
+const upload = initMulterMiddleware();
+
 const app = express();
 
 const port = process.env.PORT;
@@ -98,6 +102,23 @@ app.delete("/comments/:id(\\d+)", async (request, response, next) => {
         next(`Cannot DELETE /comments/${commentId}`);
     }
 });
+
+app.post(
+    "/comments/:id(\\d+)/photo",
+    upload.single("photo"),
+    async (request, response, next) => {
+        console.log("request.file", request.file);
+
+        if (!request.file) {
+            response.status(400);
+            return next(`No photo file uploaded.`);
+        }
+
+        const photoFilename = request.file.filename;
+
+        response.status(201).json({ photoFilename });
+    }
+);
 
 app.use(validationErrorMiddleware);
 

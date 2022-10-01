@@ -7,7 +7,15 @@
         <title>Document</title>
     </head>
     <body>
-        <script>
+        <form
+            action="http://localhost:3000/comments/1/photo"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+            <input type="file" name="photo" />
+            <input type="submit" />
+        </form>
+        <!--         <script>
             async function fetchComments() {
                 const response = await fetch("http://localhost:3000/comments");
                 const comments = await response.json();
@@ -15,6 +23,6 @@
             }
 
             fetchComments();
-        </script>
+        </script> -->
     </body>
 </html>
