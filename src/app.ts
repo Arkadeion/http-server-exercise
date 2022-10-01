@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import "express-async-errors";
 import prisma from "./lib/prisma/client";
+import cors from "cors";
 
 import {
     validate,
@@ -15,6 +16,12 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(express.json());
+
+const corsOptions = {
+    origin: "http://localhost:8080",
+};
+
+app.use(cors(corsOptions));
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
