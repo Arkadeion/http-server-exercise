@@ -1,24 +1,26 @@
 import "dotenv/config";
 import express from "express";
 import "express-async-errors";
-import cors from "cors";
 import config from "./config";
 
+import { initCorsMiddleware } from "./lib/middleware/cors";
 import { validationErrorMiddleware } from "./lib/middleware/validation";
+import { initSessionMiddleware } from "./lib/middleware/session";
+import { passport } from "./lib/middleware/passport";
 
 import commentsRoutes from "./routes/comments";
 
 const app = express();
 
+app.use(initSessionMiddleware());
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.json());
 
-const corsOptions = {
-    origin: "http://localhost:8080",
-};
+app.use(initCorsMiddleware());
 
 const port = config.PORT;
-
-app.use(cors(corsOptions));
 
 app.use("/comments", commentsRoutes);
 
