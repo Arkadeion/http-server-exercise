@@ -9,6 +9,7 @@ import { initSessionMiddleware } from "./lib/middleware/session";
 import { passport } from "./lib/middleware/passport";
 
 import commentsRoutes from "./routes/comments";
+import authRoutes from "./routes/auth";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(initCorsMiddleware());
 const port = config.PORT;
 
 app.use("/comments", commentsRoutes);
+app.use("/auth", authRoutes);
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);

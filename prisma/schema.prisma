@@ -16,5 +16,7 @@ model Comment {
     title           String     @db.VarChar(50)
     commentBody     String     @db.VarChar(255)
     createdAt       DateTime  @default(now())
+    createdBy       String?   @db.VarChar(255)
     updatedAt       DateTime  @updatedAt
+    updatedBy       String?   @db.VarChar(255)
 }

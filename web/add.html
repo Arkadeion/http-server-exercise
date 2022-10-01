@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+    <body>
+        <p>
+            <a href="http://localhost:3000/auth/login?redirectTo=http://localhost:8080/add">Login</a>
+        </p>
+
+        <form action="http://localhost:3000/comments" id="form-add">
+            <label>
+                <strong>User ID:</strong>
+                <input type="number" name="userId">
+            </label>
+
+            <label>
+               <strong>Comment Title:</strong>
+                <input type="text" name="title">
+            </label>
+
+            <label>
+               <strong>Comment Body:</strong>
+                <input type="text" name="commentBody">
+            </label>
+
+            <input type="submit" value="Add comment">
+        </form>
+
+        <script>
+            async function addComment(event) {
+                event.preventDefault();
+
+                const form = event.currentTarget;
+
+                const formData = new FormData(form);
+                const plainFormData = Object.fromEntries(formData.entries());
+                plainFormData.userId = parseInt(plainFormData.userId);
+                const formDataJsonString = JSON.stringify(plainFormData);
+
+                console.log(formData);
+                console.log(plainFormData);
+                console.log(formDataJsonString);
+
+                const url = form.action;
+
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: formDataJsonString,
+                    credentials: "include",
+                });
+
+                const comment = await response.json();
+
+                console.dir(comment);
+            }
+
+            const addForm = document.getElementById("form-add");
+
+            addForm.addEventListener("submit", addComment);
+        </script>
+    </body>
+</html>

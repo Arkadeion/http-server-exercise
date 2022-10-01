@@ -8,6 +8,8 @@ import {
     CommentData,
 } from "../lib/middleware/validation";
 
+import { checkAuthorization } from "../lib/middleware/passport";
+
 import { initMulterMiddleware } from "../lib/middleware/multer";
 
 const upload = initMulterMiddleware();
@@ -37,12 +39,18 @@ router.get("/:id(\\d+)", async (request, response, next) => {
 
 router.post(
     "/",
+    checkAuthorization,
     validate({ body: commentSchema }),
     async (request, response) => {
         const commentData: CommentData = request.body;
+        const username = request.user?.username as string;
 
         const comment = await prisma.comment.create({
-            data: commentData,
+            data: {
+                ...commentData,
+                createdBy: username,
+                updatedBy: username,
+            },
         });
 
         response.status(201).json(comment);
@@ -51,16 +59,20 @@ router.post(
 
 router.put(
     "/:id(\\d+)",
+    checkAuthorization,
     validate({ body: commentSchema }),
     async (request, response, next) => {
         const commentId = Number(request.params.id);
-
         const commentData: CommentData = request.body;
+        const username = request.user?.username as string;
 
         try {
             const comment = await prisma.comment.update({
                 where: { id: commentId },
-                data: commentData,
+                data: {
+                    ...commentData,
+                    updatedBy: username,
+                },
             });
 
             response.status(200).json(comment);
@@ -71,23 +83,28 @@ router.put(
     }
 );
 
-router.delete("/:id(\\d+)", async (request, response, next) => {
-    const commentId = Number(request.params.id);
+router.delete(
+    "/:id(\\d+)",
+    checkAuthorization,
+    async (request, response, next) => {
+        const commentId = Number(request.params.id);
 
-    try {
-        await prisma.comment.delete({
-            where: { id: commentId },
-        });
+        try {
+            await prisma.comment.delete({
+                where: { id: commentId },
+            });
 
-        response.status(204).end();
-    } catch (error) {
-        response.status(404);
-        next(`Cannot DELETE /comments/${commentId}`);
+            response.status(204).end();
+        } catch (error) {
+            response.status(404);
+            next(`Cannot DELETE /comments/${commentId}`);
+        }
     }
-});
+);
 
 router.post(
     "/:id(\\d+)/photo",
+    checkAuthorization,
     upload.single("photo"),
     async (request, response, next) => {
         console.log("request.file", request.file);
