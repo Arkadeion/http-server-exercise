@@ -8,7 +8,7 @@
     "dev": "npm run build && concurrently 'npm:build:dev' 'npm:start:dev'",
     "format": "prettier --write .",
     "lint": "eslint src/ --cache --fix",
-    "start": "node --enable-source-maps dist/server.js",
+    "start": "node --enable-source-maps dist/app.js",
     "start:dev": "nodemon --watch dist/ --watch .env",
     "test": "jest",
     "task": "echo 'Doing a task'"
